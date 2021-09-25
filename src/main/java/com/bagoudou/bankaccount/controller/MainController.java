@@ -41,15 +41,15 @@ public class MainController {
 	 */
 	@GetMapping("/account/{username}")
 	String newAccount(@PathVariable String username) {
-		
+
 		Account account = accountService.findByUserName(username);
 		if (account == null) {
 			accountService.save(new Account(username, 0L));
 			return username + "'s account created!";
 		}
-		
+
 		return "User already created";
-		
+
 	}
 
 	/**
@@ -146,7 +146,7 @@ public class MainController {
 		payeeAccount.setBalance(payeeAccount.getBalance() + amountInt);
 		accountService.update(payeeAccount);
 
-		return "Transfer successful! new payer balance:" + payerAccount.getBalance();
+		return "Transfer successful! new payer's balance:" + payerAccount.getBalance();
 	}
 
 	/**
@@ -163,7 +163,7 @@ public class MainController {
 			StringBuilder sb = new StringBuilder();
 			account.getTransactionHistory().stream().forEach(history -> {
 				sb.append("" + history.getAccount().getUsername()).append(" sent " + history.getAmount())
-						.append(" to user ID " + history.getPayee());
+						.append(" to user ID " + history.getPayee()).append("; "+System.lineSeparator());
 			});
 			return sb.toString();
 		}
