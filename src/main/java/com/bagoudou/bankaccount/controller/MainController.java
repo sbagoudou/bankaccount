@@ -41,8 +41,15 @@ public class MainController {
 	 */
 	@GetMapping("/account/{username}")
 	String newAccount(@PathVariable String username) {
-		accountService.save(new Account(username, 0L));
-		return username + "'s account created!";
+		
+		Account account = accountService.findByUserName(username);
+		if (account == null) {
+			accountService.save(new Account(username, 0L));
+			return username + "'s account created!";
+		}
+		
+		return "User already created";
+		
 	}
 
 	/**
