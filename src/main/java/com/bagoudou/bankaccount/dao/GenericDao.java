@@ -18,6 +18,7 @@ public abstract class GenericDao<T extends Serializable> implements IGenericDao<
 	/**
 	* Default constructor
 	*/
+	@SuppressWarnings("unchecked")
 	public GenericDao() {
 		clazz = (Class<T>)((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[0];
 	}
@@ -27,6 +28,7 @@ public abstract class GenericDao<T extends Serializable> implements IGenericDao<
 		return (T) getCurrentSession().get(clazz, id);
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<T> findAll() {
 		return getCurrentSession().createQuery("from " + clazz.getName()).list();
 	}
@@ -35,6 +37,7 @@ public abstract class GenericDao<T extends Serializable> implements IGenericDao<
 		getCurrentSession().persist(entity);
 	}
 
+	@SuppressWarnings("unchecked")
 	public T update(T entity) {
 		return (T) getCurrentSession().merge(entity);
 	}
