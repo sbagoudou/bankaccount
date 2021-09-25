@@ -17,5 +17,7 @@ public interface IAccountService {
 	public void delete(Account entity);
 
 	public void deleteById(long id);
+	
+	public Account findByUserName(String username);
 
 }

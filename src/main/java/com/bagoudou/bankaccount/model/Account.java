@@ -1,10 +1,12 @@
 package com.bagoudou.bankaccount.model;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -31,10 +33,15 @@ public class Account implements Serializable{
     @Column(name = "BALANCE")
     private Long balance;
     
-    @OneToMany(mappedBy="account")
+    @OneToMany(mappedBy="account", fetch = FetchType.EAGER)
     private Set<TransactionHistory> transactionHistory;
     
-    
+    /**
+     * 
+	 */
+	public Account() {
+		super();
+	}
 
 	/**
 	 * @param accountId
@@ -43,7 +50,7 @@ public class Account implements Serializable{
 	 */
 	public Account(String username, Long balance) {
 		super();
-		this.username = username;
+		this.username = username; 
 		this.balance = balance;
 	}
 
@@ -93,6 +100,9 @@ public class Account implements Serializable{
 	 * @return the transactionHistory
 	 */
 	public Set<TransactionHistory> getTransactionHistory() {
+		if (transactionHistory == null) {
+			transactionHistory = new HashSet<>();
+		}
 		return transactionHistory;
 	}
 
@@ -101,6 +111,44 @@ public class Account implements Serializable{
 	 */
 	public void setTransactionHistory(Set<TransactionHistory> transactionHistory) {
 		this.transactionHistory = transactionHistory;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Account other = (Account) obj;
+		if (accountId == null) {
+			if (other.accountId != null)
+				return false;
+		} else if (!accountId.equals(other.accountId))
+			return false;
+		if (balance == null) {
+			if (other.balance != null)
+				return false;
+		} else if (!balance.equals(other.balance))
+			return false;
+		if (transactionHistory == null) {
+			if (other.transactionHistory != null)
+				return false;
+		} else if (!transactionHistory.equals(other.transactionHistory))
+			return false;
+		if (username == null) {
+			if (other.username != null)
+				return false;
+		} else if (!username.equals(other.username))
+			return false;
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "Account [accountId=" + accountId + ", username=" + username + ", balance=" + balance
+				+ ", transactionHistory=" + transactionHistory + "]";
 	}
 	
 	

@@ -48,4 +48,9 @@ public class AccountService implements IAccountService {
 		accountDao.deleteById(id);
 		
 	}
+
+	@Override
+	public Account findByUserName(String username) { 
+		return accountDao.findByUserName(username);
+	}
 }

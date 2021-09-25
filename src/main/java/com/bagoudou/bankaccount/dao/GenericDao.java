@@ -13,7 +13,7 @@ public abstract class GenericDao<T extends Serializable> implements IGenericDao<
 	private Class<T> clazz;
 
 	@Autowired
-	private SessionFactory sessionFactory;
+	private SessionFactory sessionFactory; 
 
 	/**
 	* Default constructor

@@ -34,6 +34,13 @@ public class TransactionHistory implements Serializable {
     
     @Column(name = "AMOUNT")
     private Long amount;
+    
+    /**
+	 * 
+	 */
+	public TransactionHistory() {
+		super();
+	}
 
 	/**
 	 * @param transactionId
@@ -45,7 +52,7 @@ public class TransactionHistory implements Serializable {
 		super();
 		this.account = account;
 		this.payee = payee;
-		this.amount = amount;
+		this.amount = amount; 
 	}
 
 	/**
@@ -103,6 +110,45 @@ public class TransactionHistory implements Serializable {
 	public void setAmount(Long amount) {
 		this.amount = amount;
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		TransactionHistory other = (TransactionHistory) obj;
+		if (account == null) {
+			if (other.account != null)
+				return false;
+		} else if (!account.equals(other.account))
+			return false;
+		if (amount == null) {
+			if (other.amount != null)
+				return false;
+		} else if (!amount.equals(other.amount))
+			return false;
+		if (payee == null) {
+			if (other.payee != null)
+				return false;
+		} else if (!payee.equals(other.payee))
+			return false;
+		if (transactionId == null) {
+			if (other.transactionId != null)
+				return false;
+		} else if (!transactionId.equals(other.transactionId))
+			return false;
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "TransactionHistory [transactionId=" + transactionId + ", account=" + account + ", payee=" + payee
+				+ ", amount=" + amount + "]";
+	}
     
+	
     
 }
