@@ -1,11 +1,13 @@
 package com.bagoudou.bankaccount.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.bagoudou.bankaccount.model.Account;
 import com.bagoudou.bankaccount.model.TransactionHistory;
@@ -69,7 +71,7 @@ public class MainController {
 
 		Account account = accountService.findByUserName(username);
 		if (account == null) {
-			return "The user account does not exist";
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Account Not Found");
 		}
 
 		account.setBalance(account.getBalance() + amountInt);
@@ -95,7 +97,7 @@ public class MainController {
 
 		Account account = accountService.findByUserName(username);
 		if (account == null) {
-			return "The user account does not exist";
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Account Not Found");
 		}
 
 		if (account.getBalance() < amountInt) {
@@ -129,7 +131,7 @@ public class MainController {
 		Account payerAccount = accountService.findByUserName(payer);
 		Account payeeAccount = accountService.findByUserName(payee);
 		if (payerAccount == null || payeeAccount == null) {
-			return "Either payer account or payee account does not exist";
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Account Not Found");
 		}
 
 		if (payerAccount.getBalance() < amountInt) {
@@ -160,14 +162,17 @@ public class MainController {
 		Account account = accountService.findByUserName(username);
 
 		if (account != null) {
+			if (account.getTransactionHistory().isEmpty()) {
+				return "No records";
+			}
 			StringBuilder sb = new StringBuilder();
 			account.getTransactionHistory().stream().forEach(history -> {
 				sb.append("" + history.getAccount().getUsername()).append(" sent " + history.getAmount())
-						.append(" to user ID " + history.getPayee()).append("; "+System.lineSeparator());
+						.append(" to user ID " + history.getPayee()).append("; " + System.lineSeparator());
 			});
 			return sb.toString();
 		}
-		return "Account does not exist";
+		throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Account Not Found");
 	}
 
 }
