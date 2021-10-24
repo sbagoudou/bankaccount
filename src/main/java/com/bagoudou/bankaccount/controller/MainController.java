@@ -14,6 +14,11 @@ import com.bagoudou.bankaccount.model.TransactionHistory;
 import com.bagoudou.bankaccount.service.IAccountService;
 import com.bagoudou.bankaccount.service.ITransactionHistoryService;
 
+import reactor.core.CoreSubscriber;
+import reactor.core.publisher.Mono;
+import reactor.util.function.Tuple2;
+import reactor.util.function.Tuples;
+
 @RestController
 public class MainController {
 
@@ -31,8 +36,14 @@ public class MainController {
 			Account defaultAccount = new Account("DEFAULT_USER", 5000L);
 			accountService.save(defaultAccount);
 		}
+		
+		Tuple2<String, Integer> t = Tuples.of("ONE", 1);
+		
+		Mono<String> mono1 = Mono.just("Mono_Data1");
+		Mono<String> mono2 = Mono.just("Mono_Data2");
+		Mono<Tuple2<String, String>> monoCombine = mono1.zipWith(mono2);
 
-		return "Welcome! Default account created";
+		return "Welcome! Default account created "+t.getT1();
 	}
 
 	/**
