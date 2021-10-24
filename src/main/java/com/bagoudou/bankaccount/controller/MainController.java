@@ -43,7 +43,7 @@ public class MainController {
 		Mono<String> mono2 = Mono.just("Mono_Data2");
 		Mono<Tuple2<String, String>> monoCombine = mono1.zipWith(mono2);
 
-		return "Welcome! Default account created "+t.getT1()+ " "+ monoCombine.log();
+		return "Welcome! Default account created "+t.getT1();
 	}
 
 	/**
